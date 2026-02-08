@@ -1,10 +1,10 @@
 name: Deploy to Cloudflare Pages
 
 on:
-  # This listens for the signal from your Termux script
+  # Listens for the signal from your Termux script
   repository_dispatch:
     types: [deploy_assets]
-  # This allows you to click a "Run" button manually on GitHub if needed
+  # Allows manual run from GitHub Actions tab
   workflow_dispatch:
 
 jobs:
@@ -14,16 +14,16 @@ jobs:
       - name: Checkout Public Repo
         uses: actions/checkout@v4
 
-      - name: Clone Private Assets
-        # This uses your Secret Key to download the Private Repo
+      - name: Clone Private Assets (CORRECTED)
         run: |
-          git clone https://${{ secrets.READ_PRIVATE_PAT }}@github.com/${{ github.repository_owner }}/TMPnews-assets.git tmp_assets
+          git clone https://${{ secrets.READ_PRIVATE_PAT }}@github.com/${{ github.repository_owner }}/TMPnews-assets-02.git tmp_assets
 
       - name: Install Wrangler CLI
         run: npm install -g wrangler
 
       - name: Deploy to Cloudflare Pages
-        # This pushes the "Public" folder from the downloaded assets to Cloudflare
+        # This uploads the 'Public' folder. 
+        # Since your script saves to 'Public/images', your URL will be assets.tmpnews.com/images/filename.webp
         run: |
           wrangler pages deploy ./tmp_assets/Public \
             --project-name=${{ secrets.WRANGLER_PROJECT_NAME }} \
