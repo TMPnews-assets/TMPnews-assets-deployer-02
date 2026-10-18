@@ -1,6 +1,8 @@
 name: Deploy to Cloudflare Pages
 
 on:
+  push:
+    branches: [main]
   # Listens for the signal from your Termux script
   repository_dispatch:
     types: [deploy_assets]
